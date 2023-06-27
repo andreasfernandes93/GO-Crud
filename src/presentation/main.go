@@ -42,7 +42,7 @@ func main() {
 
 // manipulador
 func index(w http.ResponseWriter, r *http.Request) {
-	
+
 	//abrindo conecção com db
 	db := dbConection()
 
