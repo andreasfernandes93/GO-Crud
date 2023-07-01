@@ -1,20 +1,19 @@
 package repository
 
 import (
-	"go-crud/src/domain/entity"
-	database "go-crud/src/infra/db"
+	"github.com/andreasfernandes93/go-crud/src/domain/entity"
+	database "github.com/andreasfernandes93/go-crud/src/infra/db"
 )
 
 func GetAllProducts() ([]*entity.Product, error) {
     db := database.DbConection()
-	defer db.Close()
+    defer db.Close()
 
     query := "SELECT * FROM Products"
     rows, err := db.Query(query)
     if err != nil {
         return nil, err
     }
-    defer rows.Close()
 
     products := []*entity.Product{}
     for rows.Next() {
@@ -27,7 +26,13 @@ func GetAllProducts() ([]*entity.Product, error) {
             return nil, err
         }
 
-        p := entity.NewProduct(id, name, description, price, quantity)
+        p := &entity.Product{
+            Id:          id,
+            Name:        name,
+            Description: description,
+            Price:       price,
+            Quantity:    quantity,
+        }
         products = append(products, p)
     }
 
@@ -36,4 +41,17 @@ func GetAllProducts() ([]*entity.Product, error) {
     }
 
     return products, nil
+}
+
+
+func InsertProduct(name string, description string, price float64, quantity int) {
+	db := database.DbConection()
+	defer db.Close()
+
+	insertDb, err := db.Prepare("INSERT INTO Products (name, description, price, quantity) VALUES (?, ?, ?, ?)")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	insertDb.Exec(name, description, price, quantity)
 }

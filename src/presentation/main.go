@@ -1,16 +1,15 @@
 package main
 
 import (
-	"go-crud/src/presentation/controller"
 	"net/http"
 
-	
+	"github.com/andreasfernandes93/go-crud/src/presentation/routes"
 )
 
 func main() {
 
 	//rota index e controler
-	http.HandleFunc("/products", controller.GetProducts)
+	routes.Routes()
 
 	// criando servidor local na porta 8000
 	http.ListenAndServe(":8000", nil)

@@ -14,6 +14,8 @@ CREATE TABLE Products (
     Quantity INTEGER
 );
 
+DELETE FROM Products;
+
 INSERT INTO Products (Name, Description, Price, Quantity) VALUES
 ("Mouse Gamer Logitec","180dpi sem fio", 150.0, 500),
 ("Placa de Video TOP","RTX 80GB", 1500.0, 500),
@@ -21,7 +23,7 @@ INSERT INTO Products (Name, Description, Price, Quantity) VALUES
 ('Smartphone', '6.5'' Display | 128GB Storage | 5000mAh Battery', 1200.00, 150),
 ('TV', '55'' 4K Ultra HD | Smart TV | HDR', 2500.00, 100),
 ('Headphones', 'Wireless | Noise Cancelling | Bluetooth', 150.00, 300),
-('PS5', 'Videogame da Sony', 5500.99, 300)
+('PS5', 'Videogame da Sony', 5500.99, 300);
 
 
 
