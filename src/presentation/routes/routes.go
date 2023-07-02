@@ -11,5 +11,6 @@ func Routes() {
 	http.HandleFunc("/", controller.GetProducts)
 	http.HandleFunc("/add", controller.CreateFormProduct)
 	http.HandleFunc("/insert", controller.CreateProduct)
+	http.HandleFunc("/delete", controller.DeleteProduct)
 
 }

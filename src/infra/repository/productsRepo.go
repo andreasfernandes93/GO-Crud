@@ -43,6 +43,14 @@ func GetAllProducts() ([]*entity.Product, error) {
     return products, nil
 }
 
+/*
+func GetProduct(id string) (*entity.Product, error) {
+	db := database.DbConection()
+	defer db.Close()
+	queryProductId := "SELECT * FROM Products WHERE id = ?"
+	row := db.QueryRow(queryProductId, id)
+}
+*/
 
 func InsertProduct(name string, description string, price float64, quantity int) {
 	db := database.DbConection()
@@ -54,4 +62,16 @@ func InsertProduct(name string, description string, price float64, quantity int)
 	}
 
 	insertDb.Exec(name, description, price, quantity)
+}
+
+func DeleteProduct(id string) {
+	db := database.DbConection()
+	defer db.Close()
+
+	deleteDb, err := db.Prepare("DELETE FROM Products WHERE id = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	deleteDb.Exec(id)
 }
