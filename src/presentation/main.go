@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/andreasfernandes93/go-crud/src/presentation/routes"
@@ -8,9 +9,14 @@ import (
 
 func main() {
 
+	fs := http.FileServer(http.Dir("scripts"))
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", fs))
 	//rota index e controler
 	routes.Routes()
 
 	// criando servidor local na porta 8000
-	http.ListenAndServe(":8000", nil)
+	port := ":8000"
+	log.Printf("Servidor iniciado. Conexão estabelecida na porta %s", port)
+	log.Fatal(http.ListenAndServe(port, nil))
+	
 }

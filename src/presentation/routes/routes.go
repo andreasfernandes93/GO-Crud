@@ -9,8 +9,9 @@ import (
 func Routes() {
 	// alterar rota / para o index
 	http.HandleFunc("/", controller.GetProducts)
-	http.HandleFunc("/add", controller.CreateFormProduct)
+	http.HandleFunc("/add", controller.Add)
 	http.HandleFunc("/insert", controller.CreateProduct)
 	http.HandleFunc("/delete", controller.DeleteProduct)
+	http.HandleFunc("/edit", controller.Edit)
 
 }

@@ -25,7 +25,7 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 	pages.ExecuteTemplate(w, "Index", selectProducts)
 }
 
-func CreateFormProduct(w http.ResponseWriter, r *http.Request) {
+func Add(w http.ResponseWriter, r *http.Request) {
 	pages.ExecuteTemplate(w, "Add", nil)
 }
 
@@ -55,5 +55,30 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	idProduct := r.URL.Query().Get("id")
 	repository.DeleteProduct(idProduct)
+	http.Redirect(w, r, "/", 301)
+}
+
+func Edit(w http.ResponseWriter, r *http.Request) {
+	idProduct := r.URL.Query().Get("id")
+	product := repository.GetProduct(idProduct)
+	pages.ExecuteTemplate(w, "Edit", product)
+}
+
+func UpdateProduct(w http.ResponseWriter, r *http.Request) {
+	idProduct := r.URL.Query().Get("id")
+	name := r.FormValue("nome")
+	description := r.FormValue("descricao")
+	price := r.FormValue("preco")
+	priceFloat, err := strconv.ParseFloat(price, 64)
+	if err != nil {
+		log.Fatal("Erro na conversão do preço", err)
+	} 
+	quantity := r.FormValue("quantidade")
+	quantityInt, err := strconv.Atoi(quantity)
+	if err != nil {
+		log.Fatal("Erro na conversão da quantidade", err)
+	}
+	
+	repository.UpdateProduct(idProduct, name, description, priceFloat, quantityInt)
 	http.Redirect(w, r, "/", 301)
 }

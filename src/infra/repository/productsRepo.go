@@ -43,14 +43,33 @@ func GetAllProducts() ([]*entity.Product, error) {
     return products, nil
 }
 
-/*
-func GetProduct(id string) (*entity.Product, error) {
+
+func GetProduct(id string) *entity.Product {
 	db := database.DbConection()
 	defer db.Close()
-	queryProductId := "SELECT * FROM Products WHERE id = ?"
-	row := db.QueryRow(queryProductId, id)
+    query := "SELECT * FROM Products WHERE id = ?"
+	queryProductId, err := db.Query(query, id)
+    if err != nil {
+        panic(err.Error())
+    }
+    product := &entity.Product{}
+    for queryProductId.Next() {
+        var id, quantity int
+        var name, description string
+        var price float64
+
+        err := queryProductId.Scan(&id, &name, &description, &price, &quantity)
+        if err != nil {
+            panic(err.Error())
+        }
+
+        product.Name = name
+        product.Description = description
+        product.Price = price
+        product.Quantity = quantity
+    }
+    return product
 }
-*/
 
 func InsertProduct(name string, description string, price float64, quantity int) {
 	db := database.DbConection()
@@ -74,4 +93,16 @@ func DeleteProduct(id string) {
 	}
 
 	deleteDb.Exec(id)
+}
+
+func UpdateProduct(id string, name string, description string, price float64, quantity int) {
+    db := database.DbConection()
+    defer db.Close()
+
+    updateDb, err := db.Prepare("UPDATE Products SET name = ?, description = ?, price = ?, quantity = ? WHERE id = ?")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    updateDb.Exec(name, description, price, quantity, id)
 }
