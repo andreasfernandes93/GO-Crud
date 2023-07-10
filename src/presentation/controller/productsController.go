@@ -11,15 +11,11 @@ import (
 
 var pages = template.Must(template.ParseGlob("template/*.html"))
 
-// GetProducts retrieves all products and executes the "Index" template.
-//
-// It takes in two parameters, w of type http.ResponseWriter and r of type *http.Request.
-// It does not return any value.
 func GetProducts(w http.ResponseWriter, r *http.Request) {
 
 	selectProducts, err := repository.GetAllProducts()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	pages.ExecuteTemplate(w, "Index", selectProducts)
@@ -49,7 +45,6 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		repository.InsertProduct(name, description, priceFloat, quantityInt)
 	}
 	http.Redirect(w, r, "/", 301)
-
 }
 
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
@@ -65,20 +60,31 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateProduct(w http.ResponseWriter, r *http.Request) {
-	idProduct := r.URL.Query().Get("id")
-	name := r.FormValue("nome")
-	description := r.FormValue("descricao")
-	price := r.FormValue("preco")
-	priceFloat, err := strconv.ParseFloat(price, 64)
-	if err != nil {
-		log.Fatal("Erro na conversão do preço", err)
-	} 
-	quantity := r.FormValue("quantidade")
-	quantityInt, err := strconv.Atoi(quantity)
-	if err != nil {
-		log.Fatal("Erro na conversão da quantidade", err)
+
+	if r.Method == "POST" {
+		id := r.FormValue("id")
+		name := r.FormValue("nome")
+		description := r.FormValue("descricao")
+		price := r.FormValue("preco")
+		quantity := r.FormValue("quantidade")
+
+		idInt, err := strconv.Atoi(id)
+		if err != nil {
+			log.Fatal("Erro na conversão do ID", err)
+		}
+
+		priceFloat, err := strconv.ParseFloat(price, 64)
+		if err != nil {
+			log.Fatal("Erro na conversão do preço", err)
+		}
+
+		quantityInt, err := strconv.Atoi(quantity)
+		if err != nil {
+			log.Fatal("Erro na conversão da quantidade", err)
+		}
+
+		repository.UpdateProduct(idInt, name, description, priceFloat, quantityInt)
 	}
-	
-	repository.UpdateProduct(idProduct, name, description, priceFloat, quantityInt)
+
 	http.Redirect(w, r, "/", 301)
 }
