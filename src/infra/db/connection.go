@@ -16,9 +16,22 @@ func DbConection() *sql.DB {
 		log.Fatal(err)
 	}
 
-	//conecção com o banco sqlite
+	//conexão com o banco sqlite
 	connection := currentDir + "/src/infra/db/db.db"
 	db, err := sql.Open("sqlite3", connection)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	query := `CREATE TABLE IF NOT EXISTS Products (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		Name VARCHAR,
+		Description VARCHAR,
+		Price REAL,
+		Quantity INTEGER
+	);`
+
+	_, err = db.Exec(query)
 	if err != nil {
 		log.Fatal(err)
 	}
