@@ -26,13 +26,16 @@ O objetivo deste projeto é construir um CRUD básico para manipulação de dado
 
 1. Clone este repositório para o seu ambiente local.
 2. Certifique-se de ter o Go instalado em sua máquina.
-3. Execute o comando `go get` para obter as dependências do projeto.
-4. Execute o comando `go run main.go` para iniciar a aplicação.
-5. Abra o seu navegador e acesse `http://localhost:8080` para utilizar o CRUD.
+3. Execute o comando `go get` no terminal para obter as dependências do projeto.
+4. Execute o comando `go run src/presentation/main.go` no terminal para iniciar a aplicação. Certifique-se de executar o comando estando na raiz raiz do projeto em `Go-Crud/`
+5. Abra o seu navegador e acesse `http://localhost:9000` para utilizar o CRUD. 
+
+OBS: Você pode alterar a porta local editando o arquivo main.go em `src/presentation` ao alterar o trecho `	devTools.StartServer(":<PORTA DESEJADA>")`
 
 ## Melhorias Futuras
 
-- Aprimorar os conceitos de Clean Architecture com a utilização de DTOs e Value Objects.
+- Documentar o projeto utilizando Swagger.
+- Aprimorar os conceitos de Clean Architecture com a utilização de UseCases, DTOs e Value Objects.
 - Utilizar bancos de dados mais robustos através do Docker.
 - Utilizar frameworks a fim de adquirir familiaridade com as ferramentas populares do ecossistema Go.
 - Aprimorar o front-end utilizando Bootstrap e JavaScript.

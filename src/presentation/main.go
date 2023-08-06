@@ -9,6 +9,6 @@ func main() {
 
 	routes.Routes()
 
-	devTools.StartServer(":8080")
+	devTools.StartServer(":9000")
 
 }
